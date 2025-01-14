@@ -22,7 +22,7 @@ void gps_task(void *pvParameters) {
     char line[256];
     int line_pos = 0;
     
-    // Настройка вывода
+    // Отключение буферизации stdout
     setvbuf(stdout, NULL, _IONBF, 0);
     esp_log_level_set("*", ESP_LOG_INFO);
     
