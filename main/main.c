@@ -10,10 +10,14 @@
 #include "time.h"                    // Для работы со временем
 #include "sys/time.h"                // Для системного времени
 
-#define CONFIG_ESP_CONSOLE_UART_NUM 0
+// Определения используемых пинов разъема J2
+#define PIN_J2_6  (GPIO_NUM_19)  // IO19
+#define PIN_J2_7  (GPIO_NUM_23)  // IO23
+
+// Конфигурация UART для GPS
 #define GPS_UART UART_NUM_2
-#define GPS_TXD (GPIO_NUM_13)
-#define GPS_RXD (GPIO_NUM_12)
+#define GPS_TXD PIN_J2_6          // IO19 (пин 6 на J2)
+#define GPS_RXD PIN_J2_7          // IO23 (пин 7 на J2)
 #define BUF_SIZE 1024
 
 static const char *TAG = "GPS";
@@ -73,7 +77,7 @@ void app_main(void)
     
     // Конфигурация UART
     uart_config_t uart_config = {
-        .baud_rate = 115200,         // Скорость передачи
+        .baud_rate = 115200,       // Изменили скорость на 115200
         .data_bits = UART_DATA_8_BITS, // 8 бит данных
         .parity    = UART_PARITY_DISABLE, // Без четности
         .stop_bits = UART_STOP_BITS_1,    // 1 стоп-бит
@@ -89,4 +93,4 @@ void app_main(void)
     
     // Создание задачи FreeRTOS для обработки GPS данных
     xTaskCreate(gps_task, "gps_task", 4096, NULL, 5, NULL);
-} 
+}
